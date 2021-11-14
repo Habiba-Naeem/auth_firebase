@@ -15,7 +15,6 @@ class SignUpScreen extends StatelessWidget {
     try {
       UserCredential result = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      print("signed up");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -46,6 +45,7 @@ class SignUpScreen extends StatelessWidget {
                         child: Text("Sign Up"),
                         onPressed: () {
                           signUp(state.emailInput, state.passwordInput);
+                          Navigator.pushReplacementNamed(context, '/profile');
                         }),
                     //SignUpButton(),
                     MaterialButton(
