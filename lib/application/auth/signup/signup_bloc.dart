@@ -11,13 +11,16 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
   @override
   Stream<SignUpState> mapEventToState(
-      SignUpEvent event,
-      ) async* {
+    SignUpEvent event,
+  ) async* {
     if (event is EmailInputEvent) {
       yield state.copyWith(emailInput: event.input);
     }
     if (event is PasswordInputEvent) {
       yield state.copyWith(passwordInput: event.input);
+    }
+    if (event is SignUpButtonPressedEvent) {
+      yield state.copyWith(showErrors: true);
     }
   }
 }

@@ -8,12 +8,14 @@ class SignInScreen extends StatelessWidget {
   final Function onPressed;
   final FirebaseAuth auth;
 
-  const SignInScreen({Key? key, required this.onPressed, required this.auth}) : super(key: key);
+  const SignInScreen({Key? key, required this.onPressed, required this.auth})
+      : super(key: key);
 
-  Future signIn(String email, String password) async {
+  Future signIn(String email, String password, BuildContext context) async {
     try {
       UserCredential result = await auth.signInWithEmailAndPassword(
           email: email, password: password);
+          Navigator.pushReplacementNamed(context, '/profile');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -36,21 +38,34 @@ class SignInScreen extends StatelessWidget {
             body: Padding(
               padding: EdgeInsets.all(15),
               child: Form(
+                autovalidateMode: state.showErrors
+                    ? AutovalidateMode.always
+                    : AutovalidateMode.disabled,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     EmailInput(),
+
+                    const SizedBox(
+                      height: 20,
+                    ),
                     PasswordInput(),
                     //SignInButton(),
                     MaterialButton(
-                      child: Text("Sign in"),
-                      onPressed: (){
-                        signIn(state.emailInput, state.passwordInput);
-                        Navigator.pushReplacementNamed(context, '/profile');
-                      }),
-              
+                        child: Text("Sign in"),
+                        onPressed: () {
+                          signIn(state.emailInput, state.passwordInput, context);
+                          context
+                              .read<SignInBloc>()
+                              .add(SignInButtonPressedEvent());
+                          //Navigator.pushReplacementNamed(context, '/profile');
+                        }),
+
                     MaterialButton(
                         child: const Text("Register"),
                         onPressed: () => onPressed()),
+                    MaterialButton(
+                        child: Text("Sign in with Google"), onPressed: () {})
                   ],
                 ),
               ),
@@ -67,11 +82,15 @@ class EmailInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SignInBloc, SignInState>(builder: (context, state) {
       return TextFormField(
-        decoration: const InputDecoration(labelText: "Email"),
-        onChanged: (v) {
-          context.read<SignInBloc>().add(EmailInputEvent(input: v));
-        },
-      );
+          decoration: const InputDecoration(hintText: "Email"),
+          onChanged: (v) {
+            context.read<SignInBloc>().add(EmailInputEvent(input: v));
+          },
+          validator: (v) {
+            if (state.showErrors) {
+              return "Something went wrong";
+            }
+          });
     });
   }
 }
@@ -83,11 +102,16 @@ class PasswordInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SignInBloc, SignInState>(builder: (context, state) {
       return TextFormField(
-        decoration: const InputDecoration(labelText: "Password"),
-        onChanged: (v) {
-          context.read<SignInBloc>().add(PasswordInputEvent(input: v));
-        },
-      );
+          decoration: const InputDecoration(hintText: "Password"),
+          obscureText: true,
+          onChanged: (v) {
+            context.read<SignInBloc>().add(PasswordInputEvent(input: v));
+          },
+          validator: (v) {
+            if (state.showErrors) {
+              return "Something went wrong";
+            }
+          });
     });
   }
 }

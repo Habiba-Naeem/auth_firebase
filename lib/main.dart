@@ -2,6 +2,7 @@ import 'package:auth_firebase/application/auth/signin/signin_bloc.dart';
 import 'package:auth_firebase/presentation/auth/signin.dart';
 import 'package:auth_firebase/presentation/auth/signup.dart';
 import 'package:auth_firebase/presentation/profile/profile.dart';
+import 'package:auth_firebase/presentation/theme/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ void main() async {
   FirebaseApp app = await Firebase.initializeApp();
   runApp(MyApp());
 }
+
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -36,6 +38,7 @@ class _MyAppState extends State<MyApp> {
             ),
         '/home': (context) => MyApp(),
       },
+      theme: theme,
       home: showSignUp
           ? BlocProvider(
               create: (context) => SignUpBloc(),
