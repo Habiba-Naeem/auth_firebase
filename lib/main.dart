@@ -1,6 +1,6 @@
-import 'package:auth_firebase/presentation/auth/auth.dart';
 import 'package:auth_firebase/presentation/profile/profile.dart';
 import 'package:auth_firebase/presentation/theme/theme.dart';
+import 'package:auth_firebase/presentation/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -22,18 +22,16 @@ class MyApp extends StatelessWidget {
       },
       theme: theme,
       home: FutureBuilder(
-          future: Firebase.initializeApp(),
-          builder: (context, snapshot) {
-            return Authenticate();
+        future: Firebase.initializeApp(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Wrapper();
           }
-          //   if (snapshot.hasData) {
-          //     return Wrapper();
-          //   }
-          //   return const Center(
-          //     child: Text("Hello"),
-          //   );
-          // },
-          ),
+          return const Center(
+            child: Text("Hello"),
+          );
+        },
+      ),
     );
   }
 }

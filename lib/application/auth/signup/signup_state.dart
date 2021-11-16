@@ -2,24 +2,32 @@ part of 'signup_bloc.dart';
 
 @immutable
 class SignUpState {
-  final String emailInput;
-  final String passwordInput;
+  final Email email;
+  final Password password;
   final bool showErrors;
 
-  const SignUpState(
-      {required this.emailInput,
-      required this.passwordInput,
-      required this.showErrors});
+  const SignUpState({
+    required this.email,
+    required this.password,
+    required this.showErrors,
+  });
 
   factory SignUpState.initial() {
-    return const SignUpState(
-        emailInput: '', passwordInput: '', showErrors: false);
-  }
-  SignUpState copyWith(
-      {String? emailInput, String? passwordInput, bool? showErrors}) {
     return SignUpState(
-        emailInput: emailInput ?? this.emailInput,
-        passwordInput: passwordInput ?? this.passwordInput,
+      email: Email(input: ''),
+      password: Password(input: ''),
+      showErrors: false,
+    );
+  }
+  SignUpState copyWith({
+    String? emailInput,
+    String? passwordInput,
+    bool? showErrors,
+  }) {
+    return SignUpState(
+        email: emailInput != null ? Email(input: emailInput) : email,
+        password:
+            passwordInput != null ? Password(input: passwordInput) : password,
         showErrors: showErrors ?? this.showErrors);
   }
 }

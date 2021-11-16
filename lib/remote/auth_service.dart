@@ -1,12 +1,16 @@
+import 'package:auth_firebase/domain/core/email/email.dart';
+import 'package:auth_firebase/domain/core/password/password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future signIn(String email, String password) async {
+  Future signIn(Email email, Password password) async {
     try {
       UserCredential result = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
+        email: email.getOrCrash(),
+        password: password.getOrCrash(),
+      );
       print("signed in");
       return result;
     } on FirebaseAuthException catch (e) {
@@ -20,10 +24,12 @@ class AuthService {
     }
   }
 
-  Future signUp(String email, String password) async {
+  Future signUp(Email email, Password password) async {
     try {
       UserCredential result = await auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+        email: email.getOrCrash(),
+        password: password.getOrCrash(),
+      );
       return result;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

@@ -13,8 +13,8 @@ class SignInState {
   });
   factory SignInState.initial() {
     return SignInState(
-      email: Email(value: ''),
-      password: Password(value: ''),
+      email: Email(input: ''),
+      password: Password(input: ''),
       showErrors: false,
     );
   }
@@ -24,9 +24,9 @@ class SignInState {
     bool? showErrors,
   }) {
     return SignInState(
-      email: emailInput != null ? Email(value: emailInput) : email,
+      email: emailInput != null ? Email(input: emailInput) : email,
       password:
-          passwordInput != null ? Password(value: passwordInput) : password,
+          passwordInput != null ? Password(input: passwordInput) : password,
       showErrors: showErrors ?? this.showErrors,
     );
   }

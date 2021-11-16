@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:auth_firebase/domain/core/email/email.dart';
+import 'package:auth_firebase/domain/core/password/password.dart';
 import 'package:auth_firebase/remote/auth_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -23,7 +25,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     if (event is SignUpButtonPressedEvent) {
       yield state.copyWith(showErrors: true);
 
-      await AuthService().signUp(state.emailInput, state.passwordInput);
+      if (state.email.value.isLeft() || state.password.value.isLeft()) return;
+      await AuthService().signUp(state.email, state.password);
     }
   }
 }

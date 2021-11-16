@@ -1,7 +1,13 @@
-class Email {
-  final String value;
+import 'package:dartz/dartz.dart';
 
-  Email({required this.value}) : assert(isValid(value));
+class Email {
+  // final String value;
+  final Either<String, String> value;
+
+  Email({required String input})
+      : value = isValid(input) ? right(input) : left(input);
+
+  String getOrCrash() => value.fold((l) => throw Error(), (r) => r);
 
   static bool isValid(String pattern) {
     return RegExp(
