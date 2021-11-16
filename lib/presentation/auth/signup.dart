@@ -1,5 +1,4 @@
 import 'package:auth_firebase/application/auth/signup/signup_bloc.dart';
-import 'package:auth_firebase/remote/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -96,7 +95,6 @@ class SignUpButton extends StatelessWidget {
       return ElevatedButton(
         child: Text("Sign Up"),
         onPressed: () async {
-          await AuthService().signUp(state.emailInput, state.passwordInput);
           context.read<SignUpBloc>().add(SignUpButtonPressedEvent());
         },
       );
