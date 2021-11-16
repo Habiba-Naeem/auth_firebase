@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:auth_firebase/remote/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final FirebaseAuth auth;
-  const ProfileScreen({Key? key, required this.auth}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +24,11 @@ class ProfileScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: ElevatedButton(
-                    child: Text("Sign out"),
-                    onPressed: () async {
-                      try {
-                        await auth.signOut();
-                        Navigator.pushReplacementNamed(context, '/home');
-                      } catch (e) {
-                        print("no user");
-                      }
-                    }),
+                  child: Text("Sign out"),
+                  onPressed: () async {
+                    AuthService().signOut();
+                  },
+                ),
               )
             ],
           ),

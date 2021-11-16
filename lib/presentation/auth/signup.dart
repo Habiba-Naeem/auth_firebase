@@ -1,30 +1,12 @@
 import 'package:auth_firebase/application/auth/signup/signup_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:auth_firebase/remote/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpScreen extends StatelessWidget {
   final Function onPressed;
-  final FirebaseAuth auth;
 
-  const SignUpScreen({Key? key, required this.onPressed, required this.auth})
-      : super(key: key);
-
-  Future signUp(String email, String password, BuildContext context) async {
-    try {
-      UserCredential result = await auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      Navigator.pushReplacementNamed(context, '/profile');
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  const SignUpScreen({Key? key, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,19 +31,7 @@ class SignUpScreen extends StatelessWidget {
                     PasswordInput(),
                     Column(
                       children: [
-                        ElevatedButton(
-                          child: Text("Sign Up"),
-                          onPressed: () {
-                            signUp(
-                                state.emailInput, state.passwordInput, context);
-                            context
-                                .read<SignUpBloc>()
-                                .add(SignUpButtonPressedEvent());
-                          },
-                        ),
-                        //SignUpButton(),
-                        // how to use this signup button without passing state
-
+                        SignUpButton(),
                         TextButton(
                             child: const Text("Sign In"),
                             onPressed: () => onPressed()),
@@ -122,6 +92,14 @@ class SignUpButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(child: const Text("Sign Up"), onPressed: () {});
+    return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
+      return ElevatedButton(
+        child: Text("Sign Up"),
+        onPressed: () async {
+          await AuthService().signUp(state.emailInput, state.passwordInput);
+          context.read<SignUpBloc>().add(SignUpButtonPressedEvent());
+        },
+      );
+    });
   }
 }

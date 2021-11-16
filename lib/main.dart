@@ -9,31 +9,29 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseApp app = await Firebase.initializeApp();
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  bool showSignUp = false;
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        initialRoute: '/',
-        routes: {
-          '/profile': (context) => ProfileScreen(
-                auth: auth,
-              ),
-          '/home': (context) => MyApp(),
+      initialRoute: '/',
+      routes: {
+        '/profile': (context) => ProfileScreen(),
+      },
+      theme: theme,
+      home: FutureBuilder(
+        future: Firebase.initializeApp(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Wrapper();
+          }
+          return const Center(
+            child: Text("Hello"),
+          );
         },
-        theme: theme,
-        home: Wrapper());
+      ),
+    );
   }
 }

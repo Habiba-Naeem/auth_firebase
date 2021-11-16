@@ -1,30 +1,12 @@
 import 'package:auth_firebase/application/auth/signin/signin_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:auth_firebase/remote/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignInScreen extends StatelessWidget {
   final Function onPressed;
-  final FirebaseAuth auth;
 
-  const SignInScreen({Key? key, required this.onPressed, required this.auth})
-      : super(key: key);
-
-  Future signIn(String email, String password, BuildContext context) async {
-    try {
-      UserCredential result = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      Navigator.pushReplacementNamed(context, '/profile');
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  const SignInScreen({Key? key, required this.onPressed}) : super(key: key);
 
 /*
   Future<UserCredential> signInWithGoogle() async {
@@ -62,23 +44,11 @@ class SignInScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     EmailInput(),
-
                     const SizedBox(
                       height: 20,
                     ),
                     PasswordInput(),
-                    //SignInButton(),
-                    ElevatedButton(
-                        child: Text("Sign in"),
-                        onPressed: () {
-                          signIn(
-                              state.emailInput, state.passwordInput, context);
-                          context
-                              .read<SignInBloc>()
-                              .add(SignInButtonPressedEvent());
-                          //Navigator.pushReplacementNamed(context, '/profile');
-                        }),
-
+                    SignInButton(),
                     TextButton(
                         child: const Text("Register"),
                         onPressed: () => onPressed()),
@@ -145,6 +115,15 @@ class SignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(child: const Text("Sign in"), onPressed: () {});
+    return BlocBuilder<SignInBloc, SignInState>(builder: (context, state) {
+      return ElevatedButton(
+        child: Text("Sign In"),
+        onPressed: () async {
+          await AuthService().signIn(state.emailInput, state.passwordInput);
+
+          context.read<SignInBloc>().add(SignInButtonPressedEvent());
+        },
+      );
+    });
   }
 }
