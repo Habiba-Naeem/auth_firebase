@@ -11,24 +11,32 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Habiba Naeem"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
-            ProfileHeader(),
-            ProfileInfo(),
-            ProfilePosts(),
-            MaterialButton(
-                child: Text("Sign out"),
-                onPressed: () async {
-                  try {
-                    await auth.signOut();
-                    Navigator.pushReplacementNamed(context, '/home');
-                  } catch (e) {
-                    print("no user");
-                  }
-                })
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              ProfileHeader(),
+              const SizedBox(
+                height: 20,
+              ),
+              ProfileInfo(),
+              ProfilePosts(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton(
+                    child: Text("Sign out"),
+                    onPressed: () async {
+                      try {
+                        await auth.signOut();
+                        Navigator.pushReplacementNamed(context, '/home');
+                      } catch (e) {
+                        print("no user");
+                      }
+                    }),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -49,20 +57,24 @@ class ProfileHeader extends StatelessWidget {
           ),
         ),
         Expanded(
-          
           child: Column(
-        
             children: [
               Row(
                 children: [
-                  Column(
-                    children: [Text("1000"), Text("Posts")],
+                  Expanded(
+                    child: Column(
+                      children: [Text("1000"), Text("Posts")],
+                    ),
                   ),
-                  Column(
-                    children: [Text("1000"), Text("Posts")],
+                  Expanded(
+                    child: Column(
+                      children: [Text("233"), Text("Followers")],
+                    ),
                   ),
-                  Column(
-                    children: [Text("1000"), Text("Posts")],
+                  Expanded(
+                    child: Column(
+                      children: [Text("134"), Text("Following")],
+                    ),
                   ),
                 ],
               ),
@@ -87,7 +99,13 @@ class ProfileInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("Habiba Naeem");
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [Text("Habiba Naeem"), Text("Bio")],
+      ),
+    );
   }
 }
 

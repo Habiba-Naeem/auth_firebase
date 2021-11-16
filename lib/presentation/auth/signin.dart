@@ -1,5 +1,4 @@
 import 'package:auth_firebase/application/auth/signin/signin_bloc.dart';
-import 'package:auth_firebase/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +14,7 @@ class SignInScreen extends StatelessWidget {
     try {
       UserCredential result = await auth.signInWithEmailAndPassword(
           email: email, password: password);
-          Navigator.pushReplacementNamed(context, '/profile');
+      Navigator.pushReplacementNamed(context, '/profile');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -27,6 +26,25 @@ class SignInScreen extends StatelessWidget {
     }
   }
 
+/*
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+*/
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SignInBloc, SignInState>(
@@ -42,7 +60,6 @@ class SignInScreen extends StatelessWidget {
                     ? AutovalidateMode.always
                     : AutovalidateMode.disabled,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     EmailInput(),
 
@@ -51,21 +68,28 @@ class SignInScreen extends StatelessWidget {
                     ),
                     PasswordInput(),
                     //SignInButton(),
-                    MaterialButton(
+                    ElevatedButton(
                         child: Text("Sign in"),
                         onPressed: () {
-                          signIn(state.emailInput, state.passwordInput, context);
+                          signIn(
+                              state.emailInput, state.passwordInput, context);
                           context
                               .read<SignInBloc>()
                               .add(SignInButtonPressedEvent());
                           //Navigator.pushReplacementNamed(context, '/profile');
                         }),
 
-                    MaterialButton(
+                    TextButton(
                         child: const Text("Register"),
                         onPressed: () => onPressed()),
-                    MaterialButton(
-                        child: Text("Sign in with Google"), onPressed: () {})
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: OutlinedButton(
+                          child: Text("Sign in with Google"),
+                          onPressed: () {
+                            //signInWithGoogle();
+                          }),
+                    )
                   ],
                 ),
               ),
