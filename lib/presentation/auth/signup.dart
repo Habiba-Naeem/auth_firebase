@@ -57,8 +57,8 @@ class EmailInput extends StatelessWidget {
             context.read<SignUpBloc>().add(EmailInputEvent(input: v));
           },
           validator: (v) {
-            if (state.showErrors) {
-              return "Something went wrong";
+            if (state.showErrors && state.email.value.isLeft()) {
+              return "Incorrect email";
             }
           });
     });
@@ -78,8 +78,8 @@ class PasswordInput extends StatelessWidget {
             context.read<SignUpBloc>().add(PasswordInputEvent(input: v));
           },
           validator: (v) {
-            if (state.showErrors) {
-              return "Something went wrong";
+            if (state.showErrors && state.password.value.isLeft()) {
+              return "Password should be of 6 characters at least";
             }
           });
     });

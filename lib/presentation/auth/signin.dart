@@ -80,8 +80,8 @@ class EmailInput extends StatelessWidget {
             context.read<SignInBloc>().add(EmailInputEvent(input: v));
           },
           validator: (v) {
-            if (state.showErrors) {
-              return "Something went wrong";
+            if (state.showErrors && state.email.value.isLeft()) {
+              return "Incorrect email";
             }
           });
     });
@@ -101,8 +101,8 @@ class PasswordInput extends StatelessWidget {
             context.read<SignInBloc>().add(PasswordInputEvent(input: v));
           },
           validator: (v) {
-            if (state.showErrors) {
-              return "Something went wrong";
+            if (state.showErrors && state.password.value.isLeft()) {
+              return "Password should be of 6 characters at least";
             }
           });
     });
@@ -118,8 +118,6 @@ class SignInButton extends StatelessWidget {
       return ElevatedButton(
         child: Text("Sign In"),
         onPressed: () async {
-          // await AuthService().signIn(state.emailInput, state.passwordInput);
-
           context.read<SignInBloc>().add(SignInButtonPressedEvent());
         },
       );
