@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:auth_firebase/domain/core/email/email.dart';
 import 'package:auth_firebase/domain/core/password/password.dart';
-import 'package:auth_firebase/remote/auth_service.dart';
+import 'package:auth_firebase/presentation/remote/auth_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -23,9 +23,13 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       yield state.copyWith(passwordInput: event.input);
     }
     if (event is SignInButtonPressedEvent) {
-      yield state.copyWith(showErrors: true);
+      yield state.copyWith(showErrors: true, loading: true);
       //if any input is invalid then just return as nothing needs to be done in that case
-      if (state.email.value.isLeft() || state.password.value.isLeft()) return;
+      if (state.email.value.isLeft() || state.password.value.isLeft()) {
+        yield state.copyWith(loading: false);
+        return;
+      }
+      
       await AuthService().signIn(state.email, state.password);
     }
   }

@@ -1,4 +1,5 @@
 import 'package:auth_firebase/application/auth/signin/signin_bloc.dart';
+import 'package:auth_firebase/presentation/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,39 +31,41 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SignInBloc, SignInState>(
       builder: (context, state) {
-        return Scaffold(
-            appBar: AppBar(
-              title: Text("Sign In"),
-            ),
-            body: Padding(
-              padding: EdgeInsets.all(15),
-              child: Form(
-                autovalidateMode: state.showErrors
-                    ? AutovalidateMode.always
-                    : AutovalidateMode.disabled,
-                child: Column(
-                  children: [
-                    EmailInput(),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    PasswordInput(),
-                    SignInButton(),
-                    TextButton(
-                        child: const Text("Register"),
-                        onPressed: () => onPressed()),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: OutlinedButton(
-                          child: Text("Sign in with Google"),
-                          onPressed: () {
-                            //signInWithGoogle();
-                          }),
-                    )
-                  ],
+        return state.loading
+            ? Loading() : Scaffold(
+                appBar: AppBar(
+                  title: Text("Sign In"),
                 ),
-              ),
-            ));
+                body: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Form(
+                    autovalidateMode: state.showErrors
+                        ? AutovalidateMode.always
+                        : AutovalidateMode.disabled,
+                    child: Column(
+                      children: [
+                        EmailInput(),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        PasswordInput(),
+                        SignInButton(),
+                        TextButton(
+                            child: const Text("Register"),
+                            onPressed: () => onPressed()),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: OutlinedButton(
+                              child: Text("Sign in with Google"),
+                              onPressed: () {
+                                //signInWithGoogle();
+                              }),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
       },
     );
   }

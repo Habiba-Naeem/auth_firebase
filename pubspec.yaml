@@ -39,7 +39,8 @@ dependencies:
   firebase_core:
   firebase_auth:
   google_sign_in: "^4.5.1"
-  #cloud_firestore: ^3.1.0
+  flutter_spinkit: ^5.1.0
+  cloud_firestore: ^3.1.0
 
 dev_dependencies:
   flutter_test:

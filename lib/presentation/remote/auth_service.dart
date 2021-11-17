@@ -1,3 +1,4 @@
+import 'package:auth_firebase/domain/auth/user/user.dart';
 import 'package:auth_firebase/domain/core/email/email.dart';
 import 'package:auth_firebase/domain/core/password/password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
+  _customUser(User user){
+    return user != null ? customUser(uid: user.uid) : null;
+  }
+ Stream<User> get user {
+    return auth.authStateChanges()
+      //.map((FirebaseUser user) => _userFromFirebaseUser(user));
+      .map(_customUser);
+  }
   Future signIn(Email email, Password password) async {
     try {
       UserCredential result = await auth.signInWithEmailAndPassword(
@@ -44,5 +53,11 @@ class AuthService {
 
   Future signOut() async {
     await auth.signOut();
+  }
+
+  getUser() {
+    final User? user = auth.currentUser;
+    final uid = user != null ? user.uid : "error";
+    return uid;
   }
 }

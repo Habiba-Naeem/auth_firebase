@@ -1,4 +1,4 @@
-import 'package:auth_firebase/remote/auth_service.dart';
+import 'package:auth_firebase/presentation/remote/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {

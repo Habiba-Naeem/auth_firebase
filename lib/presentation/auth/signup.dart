@@ -1,4 +1,5 @@
 import 'package:auth_firebase/application/auth/signup/signup_bloc.dart';
+import 'package:auth_firebase/presentation/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +12,9 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SignUpBloc, SignUpState>(
       builder: (context, state) {
-        return Scaffold(
+        return state.loading ? Loading() : Scaffold(
+
+          
             appBar: AppBar(
               title: Text("Sign Up"),
             ),
