@@ -1,4 +1,6 @@
 import 'package:auth_firebase/presentation/remote/auth_service.dart';
+import 'package:auth_firebase/presentation/remote/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -6,35 +8,47 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Habiba Naeem"),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            children: [
-              ProfileHeader(),
-              const SizedBox(
-                height: 20,
-              ),
-              ProfileInfo(),
-              ProfilePosts(),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: ElevatedButton(
-                  child: Text("Sign out"),
-                  onPressed: () async {
-                    AuthService().signOut();
-                  },
+    print(DatabaseService(uid: AuthService().getUser()).songs);
+    return StreamBuilder<QuerySnapshot>(
+        stream: DatabaseService(uid: AuthService().getUser()).songs,
+        builder: (context, snapshot) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("Habiba Naeem"),
+            ),
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  children: [
+                    ProfileHeader(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ProfileInfo(),
+                    ProfilePosts(),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: ElevatedButton(
+                        child: Text("Sign out"),
+                        onPressed: () async {
+                          AuthService().signOut();
+                        },
+                      ),
+                    ),
+                    ListView.builder(
+                        itemCount: snapshot.data!.docs.length != null
+                            ? snapshot.data!.docs.length
+                            : 1,
+                        itemBuilder: (BuildContext context, int idnex) {
+                          return Text(snapshot.data!.size.toString());
+                        }),
+                  ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+              ),
+            ),
+          );
+        });
   }
 }
 
@@ -104,9 +118,14 @@ class ProfileInfo extends StatelessWidget {
   }
 }
 
-class ProfilePosts extends StatelessWidget {
+class ProfilePosts extends StatefulWidget {
   const ProfilePosts({Key? key}) : super(key: key);
 
+  @override
+  State<ProfilePosts> createState() => _ProfilePostsState();
+}
+
+class _ProfilePostsState extends State<ProfilePosts> {
   @override
   Widget build(BuildContext context) {
     return Container();
