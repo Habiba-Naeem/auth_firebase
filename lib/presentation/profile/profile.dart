@@ -12,11 +12,13 @@ class ProfileScreen extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
         stream: DatabaseService(uid: AuthService().getUser()).songs,
         builder: (context, snapshot) {
+
           return Scaffold(
             appBar: AppBar(
-              title: Text("Habiba Naeem"),
+              title: Text(AuthService().auth.currentUser!.email.toString()),
             ),
             body: SafeArea(
+
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: Column(
@@ -37,9 +39,10 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     ListView.builder(
-                        itemCount: snapshot.data!.docs.length != null
+                      shrinkWrap: true,
+                        itemCount: snapshot.data!=null
                             ? snapshot.data!.docs.length
-                            : 1,
+                            : 0,
                         itemBuilder: (BuildContext context, int idnex) {
                           return Text(snapshot.data!.size.toString());
                         }),
