@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:auth_firebase/domain/core/email/email.dart';
 import 'package:auth_firebase/domain/core/password/password.dart';
-import 'package:auth_firebase/presentation/remote/auth_service.dart';
+import 'package:auth_firebase/remote/auth_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 

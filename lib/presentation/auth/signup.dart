@@ -1,5 +1,5 @@
 import 'package:auth_firebase/application/auth/signup/signup_bloc.dart';
-import 'package:auth_firebase/presentation/shared/loading.dart';
+import 'package:auth_firebase/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -21,10 +21,13 @@ class SignInState {
         loading: false);
   }
   SignInState copyWith(
-      {String? emailInput,
+      {
+        String? emailInput,
       String? passwordInput,
       bool? showErrors,
-      bool? loading}) {
+      bool? loading
+      
+      }) {
     return SignInState(
         email: emailInput != null ? Email(input: emailInput) : email,
         password:
