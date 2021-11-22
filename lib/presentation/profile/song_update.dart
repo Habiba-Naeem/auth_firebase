@@ -48,11 +48,12 @@ class _SongUpdateState extends State<SongUpdate> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () async {
-                await DatabaseService(uid: AuthService().getUser()).updateSong(
-                    name: name,
-                    albumName: albumName,
-                    songID: songId,
-                    docId: widget.docID);
+                await DatabaseService(uid: AuthService().getUser().uid)
+                    .updateSong(
+                        name: name,
+                        albumName: albumName,
+                        songID: songId,
+                        docId: widget.docID);
                 print(name);
                 print(albumName);
                 print(songId);

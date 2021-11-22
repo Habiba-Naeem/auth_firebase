@@ -23,7 +23,7 @@ class DatabaseService {
     DocumentReference documentReferencer =
         songCollection.doc(uid).collection('list').doc();
 
-    Map<String, dynamic> data = <String, dynamic>{
+    Map<String, dynamic> data = {
       "name": name,
       "albumName": albumName,
       "songID": songID
@@ -72,14 +72,14 @@ class DatabaseService {
     print(snapshot.docs.length);
     return snapshot.docs.map((DocumentSnapshot document) {
       print("docu");
-      print(document.hashCode);
+      print(document.reference.id);
       print(document.data());
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
       return Song(
         album: data['album'] ?? '',
         name: data['name'] ?? '',
         songID: data['songId'] ?? 0,
-        docID: document.hashCode.toString(),
+        docID: document.reference.id,
       );
     }).toList();
   }

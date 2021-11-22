@@ -1,7 +1,5 @@
-import 'package:auth_firebase/domain/auth/user/user.dart';
 import 'package:auth_firebase/domain/core/email/email.dart';
 import 'package:auth_firebase/domain/core/password/password.dart';
-import 'package:auth_firebase/remote/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 //creating databaseservice
@@ -55,7 +53,6 @@ class AuthService {
 
   dynamic getUser() {
     final User? user = auth.currentUser;
-    final uid = user != null ? user.uid : null;
-    return uid;
+    return user != null ? user : null;
   }
 }

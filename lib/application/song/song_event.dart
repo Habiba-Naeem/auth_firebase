@@ -14,14 +14,17 @@ class AlbumNameInputEvent extends SongEvent {
 
   AlbumNameInputEvent({required this.input});
 }
+
 class AddSongButtonPressedEvent extends SongEvent {
   AddSongButtonPressedEvent();
 }
 
 class RemoveSongButtonPressedEvent extends SongEvent {
-  RemoveSongButtonPressedEvent();
+  final String docId;
+  RemoveSongButtonPressedEvent({required this.docId});
 }
 
 class UpdateSongButtonPressedEvent extends SongEvent {
-  UpdateSongButtonPressedEvent();
+  final String docId;
+  UpdateSongButtonPressedEvent({required this.docId});
 }
