@@ -4,6 +4,7 @@ import 'package:auth_firebase/presentation/profile/song_update.dart';
 import 'package:auth_firebase/remote/auth_service.dart';
 import 'package:auth_firebase/remote/database.dart';
 import 'package:auth_firebase/remote/song.dart';
+import 'package:auth_firebase/shared/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -60,6 +61,7 @@ class SongsScreen extends StatelessWidget {
               ],
             ),
           ),
+          bottomNavigationBar: BottomNav(),
         ),
       );
     });
