@@ -17,14 +17,14 @@ class Wrapper extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return FutureBuilder<DocumentSnapshot>(
-              future: FirebaseFirestore.instance
+          return StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
                   .collection('profiles')
                   .doc(AuthService().getUser().uid)
-                  .get(),
+                  .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<DocumentSnapshot> snapshot) {
-                if (snapshot.hasData) {
+                if (snapshot.hasData && snapshot.data!.exists) {
                   return BlocProvider(
                       create: (_) => SongBloc(), child: SongsScreen());
                 }

@@ -24,21 +24,4 @@ class ProfileService {
         .whenComplete(() => print("profile creadted"))
         .catchError((e) => print(e));
   }
-
-  // Stream<DocumentSnapshot> getProfile(){
-  //   profileCollection.doc(uid).get().then((DocumentSnapshot snapshot){
-  //     if(snapshot.exists){
-  //       return snapshot;
-  //     }
-  //     else{
-  //       return snapshot;
-  //     };
-  //   });
-  // }
-  getProfile() =>
-      profileCollection.doc(uid).get().then((DocumentSnapshot snapshot) {
-        if (snapshot.exists) {
-          return snapshot;
-        }
-      });
 }
