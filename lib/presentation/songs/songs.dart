@@ -1,6 +1,6 @@
 import 'package:auth_firebase/application/song/song_bloc.dart';
-import 'package:auth_firebase/presentation/profile/song_add.dart';
-import 'package:auth_firebase/presentation/profile/song_update.dart';
+import 'package:auth_firebase/presentation/songs/song_add.dart';
+import 'package:auth_firebase/presentation/songs/song_update.dart';
 import 'package:auth_firebase/remote/auth_service.dart';
 import 'package:auth_firebase/remote/database.dart';
 import 'package:auth_firebase/remote/song.dart';
@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class SongsScreen extends StatelessWidget {
+  static const String id = 'songs';
   const SongsScreen({Key? key}) : super(key: key);
 
   @override
@@ -43,7 +44,6 @@ class SongsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(15),
             child: Column(
               children: [
-                const SongsHeader(),
                 const SizedBox(
                   height: 20,
                 ),
@@ -68,57 +68,6 @@ class SongsScreen extends StatelessWidget {
   }
 }
 
-class SongsHeader extends StatelessWidget {
-  const SongsHeader({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: CircleAvatar(
-            child: Icon(Icons.person),
-            minRadius: 50,
-          ),
-        ),
-        Expanded(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [Text("1000"), Text("List")],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [Text("233"), Text("Followers")],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [Text("134"), Text("Following")],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text("Messages"),
-                  ),
-                ],
-              )
-            ],
-          ),
-        )
-      ],
-    );
-  }
-}
-
 class SongsList extends StatefulWidget {
   const SongsList({Key? key}) : super(key: key);
 
@@ -138,8 +87,9 @@ class _SongsListState extends State<SongsList> {
           return Container(
             padding:
                 const EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-            child: SongUpdate(
-              docID: docID,
+            child: BlocProvider(
+              create: (context) => SongBloc(),
+              child: SongUpdate(docID: docID),
             ),
           );
         },

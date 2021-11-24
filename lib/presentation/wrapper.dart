@@ -1,7 +1,7 @@
 import 'package:auth_firebase/application/song/song_bloc.dart';
 import 'package:auth_firebase/presentation/auth/auth.dart';
-import 'package:auth_firebase/presentation/profile/profile_screen.dart';
-import 'package:auth_firebase/presentation/profile/songs.dart';
+import 'package:auth_firebase/presentation/profile/profile_form_screen.dart';
+import 'package:auth_firebase/presentation/songs/songs.dart';
 import 'package:auth_firebase/remote/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,7 +28,7 @@ class Wrapper extends StatelessWidget {
                   return BlocProvider(
                       create: (_) => SongBloc(), child: SongsScreen());
                 }
-                return ProfileScreen();
+                return ProfileFormScreen();
               });
         }
 
