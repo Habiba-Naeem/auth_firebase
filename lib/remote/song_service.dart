@@ -1,58 +1,57 @@
-import 'package:auth_firebase/remote/song.dart';
+import 'package:auth_firebase/domain/auth/user/user.dart';
+import 'package:auth_firebase/domain/songs/song.dart';
+import 'package:auth_firebase/remote/auth_service.dart';
+import 'package:auth_firebase/remote/users_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DatabaseService {
+class SongService {
   final String uid;
-  DatabaseService({required this.uid});
+  SongService({required this.uid});
 
-  final CollectionReference songCollection =
-      FirebaseFirestore.instance.collection('songs');
+  //final user = UserService(uid: AuthService().getUser().uid).getUser();
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('users');
 
-  // Future updateUserData(String name, String album, int songId) async {
-  //   return await songCollection.doc(uid).set({
-  //     'name': name,
-  //     'album': album,
-  //     'songId': songId,
-  //   });
-  // }
-
-  Future<void> addSongs(
-      {required String name,
-      required String albumName,
-      required int songID}) async {
+  Future<void> addSongs({
+    required String name,
+    required String albumName,
+  }) async {
     DocumentReference documentReferencer =
-        songCollection.doc(uid).collection('list').doc();
+        userCollection.doc(uid).collection('songs').doc();
 
     Map<String, dynamic> data = {
       "name": name,
       "albumName": albumName,
-      "songID": songID
+      // "uid": uid,
+      // "username": user.username
+      //"songID": songID
     };
 
     await documentReferencer
         .set(data)
-        .whenComplete(() => print("Notes List added to the database"))
+        .whenComplete(() => print("Notes List added to the Song"))
         .catchError((e) => print(e));
   }
 
   Future<void> updateSong({
     required String name,
     required String albumName,
-    required int songID,
+    // required int songID,
     required String docId,
   }) async {
     DocumentReference documentReferencer =
-        songCollection.doc(uid).collection('list').doc(docId);
+        userCollection.doc(uid).collection('songs').doc(docId);
 
     Map<String, dynamic> data = <String, dynamic>{
       "name": name,
       "albumName": albumName,
-      "songID": songID,
+
+      ///"songID": songID,
     };
 
     await documentReferencer
         .update(data)
-        .whenComplete(() => print("Note List updated in the database"))
+        .whenComplete(() => print("Note List updated in the Song"))
         .catchError((e) => print(e));
   }
 
@@ -60,25 +59,25 @@ class DatabaseService {
     required String docId,
   }) async {
     DocumentReference documentReferencer =
-        songCollection.doc(uid).collection('list').doc(docId);
+        userCollection.doc(uid).collection('songs').doc(docId);
 
     await documentReferencer
         .delete()
-        .whenComplete(() => print('Note List deleted from the database'))
+        .whenComplete(() => print('Note List deleted from the Song'))
         .catchError((e) => print(e));
   }
 
   List<Song> songListFromSnapshot(QuerySnapshot snapshot) {
-    print(snapshot.docs.length);
     return snapshot.docs.map((DocumentSnapshot document) {
-      print("docu");
-      print(document.reference.id);
-      print(document.data());
+      print("in list");
       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+      print(data.length);
       return Song(
         album: data['album'] ?? '',
         name: data['name'] ?? '',
-        songID: data['songId'] ?? 0,
+        // uid: data['uid'] ?? '',
+        // username: data['username'] ?? '',
+        // songID: data['songId'] ?? 0,
         docID: document.reference.id,
       );
     }).toList();
@@ -86,8 +85,8 @@ class DatabaseService {
 
   Stream<List<Song>> get songs {
     CollectionReference songListCollection =
-        songCollection.doc(uid).collection('list');
-
+        userCollection.doc(uid).collection('songs');
+    print(songListCollection);
     return songListCollection.snapshots().map(songListFromSnapshot);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:auth_firebase/remote/navigation.dart';
 import 'package:flutter/material.dart';
 
 class BottomNav extends StatefulWidget {
@@ -8,31 +9,37 @@ class BottomNav extends StatefulWidget {
 }
 
 class _BottomNavState extends State<BottomNav> {
+<<<<<<< HEAD
+=======
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      Navigator.of(context).popAndPushNamed(navigation[index].nav);
+    });
+  }
+
+>>>>>>> 7eb1fa11c4d7763437c7707a7f266dc9d346a497
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-          backgroundColor: Colors.red,
+          icon: Icon(Icons.music_note),
+          label: 'Songs',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.business),
-          label: 'Business',
-          backgroundColor: Colors.green,
+          icon: Icon(Icons.search),
+          label: 'Discover Profile',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          label: 'School',
-          backgroundColor: Colors.purple,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Settings',
-          backgroundColor: Colors.pink,
+          icon: Icon(Icons.person),
+          label: 'Profile',
         ),
       ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.blue[800],
+      onTap: _onItemTapped,
     );
   }
 }
