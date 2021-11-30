@@ -2,12 +2,6 @@ import 'package:auth_firebase/domain/core/email/email.dart';
 import 'package:auth_firebase/domain/core/password/password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-//creating databaseservice
-// User? user = result.user;
-//      user != null
-//           ? await DatabaseService(uid: user.uid).updateUserData('0', 'new', 1)
-//           : Error();
-
 class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
 

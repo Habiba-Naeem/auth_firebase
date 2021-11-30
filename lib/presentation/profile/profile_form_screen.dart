@@ -1,5 +1,5 @@
 import 'package:auth_firebase/remote/auth_service.dart';
-import 'package:auth_firebase/remote/profile_service.dart';
+import 'package:auth_firebase/remote/users_service.dart';
 import 'package:flutter/material.dart';
 
 class ProfileFormScreen
@@ -55,8 +55,8 @@ class _ProfileFormState extends State<ProfileForm> {
           ElevatedButton(
             child: Text("Add Profile"),
             onPressed: () {
-              ProfileService(uid: AuthService().getUser().uid)
-                  .addProfile(username: username, age: age, bio: bio);
+              UserService(uid: AuthService().getUser().uid)
+                  .addUser(username: username, age: age, bio: bio);
             },
           )
         ],

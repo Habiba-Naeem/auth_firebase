@@ -1,6 +1,6 @@
 import 'package:auth_firebase/application/song/song_bloc.dart';
 import 'package:auth_firebase/remote/auth_service.dart';
-import 'package:auth_firebase/remote/database.dart';
+import 'package:auth_firebase/remote/song_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,7 +23,7 @@ class _SongUpdateState extends State<SongUpdate> {
     print("in updatae docid");
 
     print(widget.docID);
-    return BlocBuilder<SongBloc, SongState>(builder: (context, state) {
+    
       return Form(
         key: _formKey,
         child: Column(
@@ -51,15 +51,15 @@ class _SongUpdateState extends State<SongUpdate> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
-                  context
-                      .read<SongBloc>()
-                      .add(UpdateSongButtonPressedEvent(docId: widget.docID));
-                  // await DatabaseService(uid: AuthService().getUser().uid)
-                  //     .updateSong(
-                  //         name: name,
-                  //         albumName: albumName,
-                  //         songID: songId,
-                  //         docId: widget.docID);
+                  // context
+                  //     .read<SongBloc>()
+                  //     .add(UpdateSongButtonPressedEvent(docId: widget.docID));
+                  await SongService(uid: AuthService().getUser().uid)
+                      .updateSong(
+                          name: name,
+                          albumName: albumName,
+                          //songID: songId,
+                          docId: widget.docID);
                   print(name);
                   print(albumName);
                   print(songId);
@@ -67,6 +67,6 @@ class _SongUpdateState extends State<SongUpdate> {
           ],
         ),
       );
-    });
+    
   }
 }
